@@ -1,0 +1,30 @@
+name: "File Size Check Action"
+description: "Check if files exceed specified size limits"
+author: "Major126"
+branding:
+  icon: "maximize-2"
+  color: "orange"
+inputs:
+  path:
+    description: "Glob pattern for files to check"
+    required: false
+    default: "**/*.js"
+  max-size:
+    description: "Maximum file size in bytes"
+    required: false
+    default: "100000"
+  fail-on-error:
+    description: "Fail the workflow if any file exceeds the limit"
+    required: false
+    default: "true"
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        chmod +x ${{ github.action_path }}/script.sh
+        ${{ github.action_path }}/script.sh
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_MAX_SIZE: ${{ inputs.max-size }}
+        INPUT_FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
